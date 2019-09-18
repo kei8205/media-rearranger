@@ -5,6 +5,8 @@ VisualStudioVersion = 16.0.29215.179
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "media-files-rearrangement", "media-files-rearrangement\media-files-rearrangement.csproj", "{82674F87-195E-4104-9046-99D3A087F99F}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "dir-rename-by-exif-gps-data", "dir-rename-by-exif-gps-data\dir-rename-by-exif-gps-data.csproj", "{9CF65C50-8944-4506-A775-934C7A58F017}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -15,6 +17,10 @@ Global
 		{82674F87-195E-4104-9046-99D3A087F99F}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{82674F87-195E-4104-9046-99D3A087F99F}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{82674F87-195E-4104-9046-99D3A087F99F}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9CF65C50-8944-4506-A775-934C7A58F017}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9CF65C50-8944-4506-A775-934C7A58F017}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9CF65C50-8944-4506-A775-934C7A58F017}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9CF65C50-8944-4506-A775-934C7A58F017}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

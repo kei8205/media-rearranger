@@ -15,7 +15,7 @@ namespace media_files_rearrangement
 
             if (args == null || args.Length < 2)
             {
-                Console.WriteLine("Usage :media-files-rearrangement.exe {scan directory} {target directory} {geo data path}");
+                Console.WriteLine("Usage :media-files-rearrangement.exe {scan directory} {target directory}");
                 baseResponse.statusCode = MRStatusCode.CODE_INVALID_ARG_COUNT;
                 return baseResponse;
             }
