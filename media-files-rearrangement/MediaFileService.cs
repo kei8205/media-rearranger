@@ -68,7 +68,7 @@ namespace media_files_rearrangement {
                 created = moveTo(context.targetFile.FullName, destination, tries++);
                 if(!created) {
                     destination = context.destinationParent + Path.DirectorySeparatorChar + Path.GetFileNameWithoutExtension(context.targetFile.Name) + "_" + tries + Path.GetExtension(context.targetFile.Name);
-                    Console.WriteLine("WARN : {0} move failed. retrying and renamed to {1}",context.targetFile.Name, Path.GetFileName(destination));
+                    Console.WriteLine("WARN : {0} move failed. retrying and renamed to {1}", context.targetFile.Name, Path.GetFileName(destination));
                 } else {
                     context.movedFile = new FileInfo(destination);
                 }
@@ -90,7 +90,7 @@ namespace media_files_rearrangement {
                 if(context.mimeType.StartsWith("video")) {
                     writer.WriteProperty(SystemProperties.System.Media.DateEncoded, context.oldestFileDate);
                 }
-            }catch(Exception ignored) {
+            } catch(Exception ignored) {
                 Console.WriteLine("ERROR : {0}`s metadata writing failed", context.movedFile.Name);
             } finally {
                 if(writer != null) {

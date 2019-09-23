@@ -2,14 +2,11 @@
 using System.Collections.Generic;
 using System.Linq;
 
-namespace media_files_rearrangement
-{
-    public static class MimeTypeMap
-    {
+namespace media_files_rearrangement {
+    public static class MimeTypeMap {
         private static readonly Lazy<IDictionary<string, string>> _mappings = new Lazy<IDictionary<string, string>>(BuildMappings);
 
-        private static IDictionary<string, string> BuildMappings()
-        {
+        private static IDictionary<string, string> BuildMappings() {
             var mappings = new Dictionary<string, string>(StringComparer.OrdinalIgnoreCase) {
 
                 #region Big freaking list of mime types
@@ -699,10 +696,8 @@ namespace media_files_rearrangement
 
             var cache = mappings.ToList(); // need ToList() to avoid modifying while still enumerating
 
-            foreach (var mapping in cache)
-            {
-                if (!mappings.ContainsKey(mapping.Value))
-                {
+            foreach(var mapping in cache) {
+                if(!mappings.ContainsKey(mapping.Value)) {
                     mappings.Add(mapping.Value, mapping.Key);
                 }
             }
@@ -710,15 +705,12 @@ namespace media_files_rearrangement
             return mappings;
         }
 
-        public static string GetMimeType(string extension)
-        {
-            if (extension == null)
-            {
+        public static string GetMimeType(string extension) {
+            if(extension == null) {
                 throw new ArgumentNullException("extension");
             }
 
-            if (!extension.StartsWith("."))
-            {
+            if(!extension.StartsWith(".")) {
                 extension = "." + extension;
             }
 
@@ -727,35 +719,27 @@ namespace media_files_rearrangement
             return _mappings.Value.TryGetValue(extension, out mime) ? mime : "application/octet-stream";
         }
 
-        public static string GetExtension(string mimeType)
-        {
+        public static string GetExtension(string mimeType) {
             return GetExtension(mimeType, true);
         }
 
-        public static string GetExtension(string mimeType, bool throwErrorIfNotFound)
-        {
-            if (mimeType == null)
-            {
+        public static string GetExtension(string mimeType, bool throwErrorIfNotFound) {
+            if(mimeType == null) {
                 throw new ArgumentNullException("mimeType");
             }
 
-            if (mimeType.StartsWith("."))
-            {
+            if(mimeType.StartsWith(".")) {
                 throw new ArgumentException("Requested mime type is not valid: " + mimeType);
             }
 
             string extension;
 
-            if (_mappings.Value.TryGetValue(mimeType, out extension))
-            {
+            if(_mappings.Value.TryGetValue(mimeType, out extension)) {
                 return extension;
             }
-            if (throwErrorIfNotFound)
-            {
+            if(throwErrorIfNotFound) {
                 throw new ArgumentException("Requested mime type is not registered: " + mimeType);
-            }
-            else
-            {
+            } else {
                 return string.Empty;
             }
         }
