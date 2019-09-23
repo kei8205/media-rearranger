@@ -14,7 +14,7 @@ namespace dir_rename_by_exif_gps_data {
         static void Main(string[] args) {
             MRArguments argument = UsageChecker.checkAndBuildArgument(args);
 
-            var r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@"cities1000.txt"));
+            var r = new ReverseGeoCode<ExtendedGeoName>(GeoFileReader.ReadExtendedGeoNames(@argument.cityDbFileInfo.FullName));
             Parallel.ForEach(argument.targetDirs, (dir) => {
                 if(dir.Name.Contains("@")) {
                     Console.WriteLine("skipping {0}.already renamed. maybe.. it`s name contains @ character", dir.Name);
@@ -33,6 +33,7 @@ namespace dir_rename_by_exif_gps_data {
                                 double lat = gpsDirectory.GetGeoLocation().Latitude;
                                 double lon = gpsDirectory.GetGeoLocation().Longitude;
                                 ExtendedGeoName result = r.NearestNeighbourSearch(r.CreateFromLatLong(lat, lon), 1).First();
+
                                 String city = result.Name;
                                 if(cityCounter.TryGetValue(city, out int tvalue)) {
                                     cityCounter[city] = tvalue + 1;
@@ -48,7 +49,7 @@ namespace dir_rename_by_exif_gps_data {
                             }
                         } catch(Exception) { }
                     }
-                    
+
                     if(cCodeCounter.Count > 0) {
                         int total = 0;
                         String countryName = "";
@@ -61,27 +62,38 @@ namespace dir_rename_by_exif_gps_data {
                             }
                         }
                         String cityName = "";
-                        int maxCityCuont = 0;
+                        List<Tuple<String, int>> cities = new List<Tuple<String, int>>();
                         foreach(String key in cityCounter.Keys) {
-                            int tempCCount = cityCounter[key];
-                            if(tempCCount > maxCityCuont) {
-                                cityName = key;
+                            cities.Add(new Tuple<string, int>(key, cityCounter[key]));
+                        }
+
+                        Tuple<String, int>[] citiesArray = cities.OrderBy(tup => tup.Item2).ToArray();
+
+                        String destination = dir.Name + " @" + countryName;
+
+                        if(citiesArray != null && citiesArray.Length > 0) {
+                            destination += (", " + citiesArray[0].Item1);
+                            cityName = citiesArray[0].Item1;
+                            if(citiesArray.Length > 1) {
+                                Console.WriteLine("second candidate citi name : {0}, count:{1}", citiesArray[1].Item1, citiesArray[1].Item2);
+                                int c1val = citiesArray[0].Item2;
+                                int c2val = citiesArray[1].Item2;
+                                if(c2val / (float)c1val > 0.4) {
+                                    destination += ("," + citiesArray[1].Item1 + "... ");
+                                }
                             }
                         }
-                        String destination = dir.Name + " " + cityName + "@" + countryName;
-                        
                         bool moved = false;
                         try {
                             System.IO.Directory.Move(dir.FullName, dir.Parent.FullName + Path.DirectorySeparatorChar + destination);
                             moved = true;
                         } catch(Exception) { }
 
-                        Console.WriteLine("{0}`s total {1} file  has {2} gps data and most file located {3}@{4} then renaming it to {5}  {6}", dir.Name, files.Length, total, cityName, countryName, destination, moved ? "success" : "failed");
+                        Console.WriteLine("{0} has {2}/{1} gps data and almost file located [{3}@{4}]. then renaming it to {5} : {6}", dir.Name, files.Length, total, cityName, countryName, destination, moved ? "success" : "failed");
                     } else {
-                        Console.WriteLine("{0}`s total {1} file has no gps data", dir.Name, files.Length);
+                        Console.WriteLine("{0}`s {1} file has no gps data", dir.Name, files.Length);
                     }
 
-                    
                 }
             });
         }

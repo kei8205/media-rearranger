@@ -6,6 +6,8 @@ namespace dir_rename_by_exif_gps_data {
     {
 
         public DirectoryInfo dirForScan;
+
+        public FileInfo cityDbFileInfo;
         
         public List<DirectoryInfo> targetDirs;
 
